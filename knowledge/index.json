@@ -3416,6 +3416,54 @@
   ]
  },
  {
+  "path": "games/indigo-park/mollie-macaw-s-chase-as-a-minecraft-1-20-1-fabric-mob.md",
+  "kind": "game",
+  "title": "Mollie Macaw's chase from Indigo Park (UE 5.2) as a Minecraft 1.20.1 Fabric mob, from your own install",
+  "game": "Indigo Park",
+  "games_also": [
+   "Minecraft Java Edition"
+  ],
+  "game_version": "Indigo Park Chapter 1, Steam app 2504480, project RaccoonCh1, UE5+Release-5.2 (install of 2026-10-25); Minecraft 1.20.1 + Fabric Loader 0.20.1, Fabric API 0.92.12+1.20.1",
+  "platform": "windows",
+  "engine": "unreal",
+  "route": "loader-api",
+  "tools": [
+   "CUE4Parse 1.2.2 + CUE4Parse-Conversion 1.2.1 (.NET 8)",
+   "RE-UE4SS v3.0.1 (mappings dump only)",
+   "Epic-signed oo2core_9_win64.dll from a local UE 5.7 install",
+   "Fabric Loom 1.7.4 / Gradle 8.10.2 on Java 17 (Mojang mappings)",
+   "Python 3.12 + numpy + pillow (uv)"
+  ],
+  "anti_cheat": "None. Single-player, offline. The game was launched once with UE4SS to dump mappings, then restored.",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-26",
+  "links": [],
+  "tags": [
+   "content-port",
+   "mashup",
+   "unreal5",
+   "iostore",
+   "oodle",
+   "usmap",
+   "cue4parse",
+   "kismet",
+   "pawnsensing",
+   "ai-moveto",
+   "actorx",
+   "psk",
+   "psa",
+   "skinning",
+   "fabric",
+   "chase-ai",
+   "jumpscare",
+   "totem"
+  ]
+ },
+ {
   "path": "games/insaniquarium-deluxe/an-android-port-of-insaniquarium-deluxe-from-the-winfish-decompilation.md",
   "kind": "game",
   "title": "An Android port of Insaniquarium Deluxe from the WinFish decompilation on PopLib (SDL3), widescreen for a foldable and a tablet",
