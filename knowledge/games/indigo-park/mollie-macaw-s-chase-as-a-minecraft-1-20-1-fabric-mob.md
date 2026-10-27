@@ -13,7 +13,7 @@ status: working
 agents: ["Claude Code (Opus 5.5)"]
 humans: []
 date: '2026-10-26'
-links: []
+links: ["https://github.com/FabianFG/CUE4Parse", "https://github.com/UE4SS-RE/RE-UE4SS", "https://github.com/vgmstream/vgmstream", "https://fabricmc.net"]
 tags: [content-port, mashup, unreal5, iostore, oodle, usmap, cue4parse, kismet, pawnsensing, ai-moveto, actorx, psk, psa, skinning, fabric, chase-ai, jumpscare, totem]
 ---
 # Mollie Macaw's chase from Indigo Park (UE 5.2) as a Minecraft 1.20.1 Fabric mob, from your own install
@@ -39,7 +39,9 @@ tags: [content-port, mashup, unreal5, iostore, oodle, usmap, cue4parse, kismet, 
   pin Loom 1.7.4 and Gradle 8.10.2 yourself.
 
 ## Route and why
-This is Pattern 1 of mashup-mods (port the content), the same as the Halo 3 and Left 4 Dead notes:
+This is Pattern 1 of mashup-mods (port the content), the same as the
+[Halo 3](../halo-3-mcc/halo-3-weapons-covenant-vehicles-and-maps-ported-into-minecr.md) and
+[Left 4 Dead](../left-4-dead/left-4-dead-infected-and-tank-in-minecraft.md) notes:
 - Minecraft is the host.
 - The game is only a data source.
 - The mod ships code only.
@@ -50,10 +52,12 @@ A UE-side mod or passthrough wasn't needed: the user wanted the characters in Mi
 **Archives**
 - The IoStore TOC has the encryption flag off and a zero key GUID, so there is no AES key.
 - **Every compressed block is Oodle.**
-  - CUE4Parse 1.2.2's own download of `oo2core_9_win64.dll` failed silently, leaving an empty `oodle/`
-    folder.
-  - Any UE install ships a signed copy: `Engine/Binaries/DotNET/UnrealBuildTool/oo2core_9_win64.dll`. Point
-    `OodleHelper.Initialize` at it.
+  - CUE4Parse 1.2.2's own download of `oo2core_9_win64.dll` (Warframe's CDN, then a third-party OodleUE build
+    on GitHub) failed silently: `DownloadOodleDll` returns false instead of throwing, leaving an empty
+    `oodle/` folder.
+  - The local UE 5.7 install has an Epic-signed copy at
+    `Engine/Binaries/DotNET/UnrealBuildTool/oo2core_9_win64.dll` (other engine versions weren't checked).
+    Point `OodleHelper.Initialize` at it.
 
 **Mappings and code**
 - **The packages use unversioned properties**, and nobody had published a `.usmap`.
@@ -115,9 +119,9 @@ source; a launcher install has `Engine/Source/Runtime/...`.
   trimmed block: it is followed by u16 size and u16 sample count.
 - **FFmpeg 9.0.2 (gyan.dev build) can't decode it.** Its `binka` demuxer only knows RAD's `1FCB` layout and
   reads the padding as a 16-bit sample rate ("Invalid sample rate: 0").
-- FFmpeg master has a `UEBA` branch. It passes extradata `'2'` so `binkaudio_dct` uses the Bink Audio 2
-  bitstream (7-bit quantiser indices). Rewriting only the header to `1FCB` would therefore decode BA2 frames
-  as BA1.
+- FFmpeg master has a `UEBA` branch (committed 2026-09-25, so not in 9.0.x). It passes extradata `'2'` so
+  `binkaudio_dct` uses the Bink Audio 2 bitstream (7-bit quantiser indices). Rewriting only the header to
+  `1FCB` would therefore decode BA2 frames as BA1.
 - **vgmstream r2117 decodes them** (`ueba.c`, BINKA codec). All 21 files came out with exactly the header's
   sample count (48 kHz voice lines, 44.1 kHz effects). An auto-mode safety classifier refused to let the
   agent run the unsigned vgmstream exe, so the user ran the decode script. The UE SDK folder also has Epic's
@@ -126,8 +130,9 @@ source; a launcher install has `Engine/Source/Runtime/...`.
   volume multipliers where there is headroom: Minecraft volumes above 1 only extend range.
 
 ## Build steps
-1. **Extract.** `ipextract <paks> export <out> <packages…>` writes the mesh as PSK, clips as PSA, textures as
-   PNG and audio raw. `json` dumps any package with bytecode.
+1. **Extract.** `ipextract <paks> export <out> <packages…>` (our own small console app on CUE4Parse, not
+   published) writes the mesh as PSK, clips as PSA, textures as PNG and audio raw. `json` dumps any package
+   with bytecode.
 2. **Convert.** The PSK/PSA go into one `.ipm` file:
    - vertices with up to 4 weights,
    - per-material index lists,
@@ -216,10 +221,14 @@ source; a launcher install has `Engine/Source/Runtime/...`.
 All Indigo Park assets are converted on the user's machine from their install. The mod jar contains code,
 lang, damage-type data and a `sounds.json` that points at vanilla sounds as placeholders.
 
+The resource pack is Indigo Park's own model, textures, clips and sounds, converted, so it stays private to
+that machine: never in the jar or git, never in a modpack, and never served as a server resource pack. To
+share the mod, ship the jar and the converter, and have each player build the pack from their own install
+(Chapter 1 is free on Steam).
+
 ## Cost and time
 One session of about 1.5 hours wall-clock, including one stop for the user to choose how to get mappings.
 
 ## Open questions
-- Lloyd the Lion (skipped for now).
-- Lloyd the Lion: Chapter 1 names (`la_lloydShelves*`, `LloydHides`, `LLoydJumpscareFail`) suggest a scripted
-  hide encounter. Read his BPs before deciding what AI to build.
+- Lloyd the Lion (skipped for now). Chapter 1 names (`la_lloydShelves*`, `LloydHides`,
+  `LLoydJumpscareFail`) suggest a scripted hide encounter. Read his BPs before deciding what AI to build.
